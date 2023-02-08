@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyFirstBackend.DataAccess;
 
@@ -11,9 +12,10 @@ using MyFirstBackend.DataAccess;
 namespace MyFirstBackend.Migrations
 {
     [DbContext(typeof(UniversityDBContext))]
-    partial class UniversityDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230208195629_Nullable in courses Categories and Students")]
+    partial class NullableincoursesCategoriesandStudents
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -134,7 +136,8 @@ namespace MyFirstBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CourseId");
+                    b.HasIndex("CourseId")
+                        .IsUnique();
 
                     b.ToTable("Chapters");
                 });
@@ -329,12 +332,18 @@ namespace MyFirstBackend.Migrations
             modelBuilder.Entity("MyFirstBackend.Models.DataModels.Chapter", b =>
                 {
                     b.HasOne("MyFirstBackend.Models.DataModels.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseId")
+                        .WithOne("Chapter")
+                        .HasForeignKey("MyFirstBackend.Models.DataModels.Chapter", "CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Course");
+                });
+
+            modelBuilder.Entity("MyFirstBackend.Models.DataModels.Course", b =>
+                {
+                    b.Navigation("Chapter")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

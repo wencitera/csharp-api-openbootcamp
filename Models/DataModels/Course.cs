@@ -10,6 +10,12 @@ namespace MyFirstBackend.Models.DataModels
     }
     public class Course : BaseEntity
     {
+        public Course()
+        {
+            this.Categories = new HashSet<Category>();
+            this.Students = new HashSet<Student>();
+        }
+
         [Required, StringLength(50)]
         public string Name { get; set; } = string.Empty;
 
@@ -19,7 +25,6 @@ namespace MyFirstBackend.Models.DataModels
         [Required]
         public string Description { get; set; } = string.Empty;
 
-        [Required]
         public Level Level { get; set; } = Level.Basic;
 
         [Required]
@@ -28,8 +33,8 @@ namespace MyFirstBackend.Models.DataModels
         [Required]
         public ICollection<Student> Students { get; set; } = new List<Student>();
 
-        [Required]
-        public Chapter Chapter { get; set; } = new Chapter();
-
+        public int ChapterId { get; set; }
+        public virtual Chapter Chapter { get; set; } = new Chapter();
+        
     }
 }
