@@ -28,6 +28,7 @@ namespace MyFirstBackend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Student>>> GetStudents()
         {
+
             return await _context.Students.ToListAsync();
         }
 
@@ -101,6 +102,18 @@ namespace MyFirstBackend.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        [HttpGet("/withCourses")]
+        public IEnumerable<Student> GetStudentsWithCourses()
+        {
+            return _studentsService.GetStudentsWithCourses();
+        }
+
+        [HttpGet("/withoutCourses")]
+        public IEnumerable<Student> GetStudentsWithoutCourses()
+        {
+            return _studentsService.GetStudentsWithNoCourses();
         }
 
         private bool StudentExists(int id)
