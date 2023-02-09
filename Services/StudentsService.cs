@@ -3,12 +3,18 @@ using MyFirstBackend.Models.DataModels;
 
 namespace MyFirstBackend.Services
 {
+
     public class StudentsService : IStudentsService
     {
         private readonly UniversityDBContext _context;
         public StudentsService(UniversityDBContext context)
         {
             _context = context;
+        }
+
+        public IEnumerable<Student> GetStudentsByCourse(int courseId)
+        {
+            return _context.Students.Where(student => student.Courses.Any(course => course.Id == courseId));
         }
 
         public IEnumerable<Student> GetStudentsWithCourses()
@@ -20,5 +26,7 @@ namespace MyFirstBackend.Services
         {
             return _context.Students.Where(student => !student.Courses.Any());
         }
+
+       
     }
 }

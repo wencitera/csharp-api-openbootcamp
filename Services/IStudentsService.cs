@@ -7,6 +7,6 @@ namespace MyFirstBackend.Services
 
         IEnumerable<Student> GetStudentsWithCourses();
         IEnumerable<Student> GetStudentsWithNoCourses();
-       
+        IEnumerable<Student> GetStudentsByCourse(int courseId);
     }
 }

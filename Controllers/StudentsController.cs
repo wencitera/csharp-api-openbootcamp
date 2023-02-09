@@ -104,16 +104,22 @@ namespace MyFirstBackend.Controllers
             return NoContent();
         }
 
-        [HttpGet("/withCourses")]
+        [HttpGet("withCourses")]
         public IEnumerable<Student> GetStudentsWithCourses()
         {
             return _studentsService.GetStudentsWithCourses();
         }
 
-        [HttpGet("/withoutCourses")]
+        [HttpGet("withoutCourses")]
         public IEnumerable<Student> GetStudentsWithoutCourses()
         {
             return _studentsService.GetStudentsWithNoCourses();
+        }
+
+        [HttpGet("courses/{courseId}")]
+        public IEnumerable<Student> GetStudentsByCourse(int courseId)
+        {
+            return _studentsService.GetStudentsByCourse(courseId);
         }
 
         private bool StudentExists(int id)
