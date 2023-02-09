@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyFirstBackend.DataAccess;
 using MyFirstBackend.Models.DataModels;
+using MyFirstBackend.Services;
 
 namespace MyFirstBackend.Controllers
 {
@@ -16,9 +17,12 @@ namespace MyFirstBackend.Controllers
     {
         private readonly UniversityDBContext _context;
 
-        public CoursesController(UniversityDBContext context)
+        private readonly ICoursesService _coursesService;
+
+        public CoursesController(UniversityDBContext context, ICoursesService coursesService)
         {
             _context = context;
+            _coursesService = coursesService;
         }
 
         // GET: api/Courses
@@ -98,6 +102,12 @@ namespace MyFirstBackend.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        [HttpGet("/category/{categoryId}")]
+        public IEnumerable<Course> GetCoursesByCategory(int categoryId)
+        {
+            return _coursesService.GetCoursesByCategory(categoryId);
         }
 
         private bool CourseExists(int id)
