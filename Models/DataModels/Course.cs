@@ -28,7 +28,7 @@ namespace MyFirstBackend.Models.DataModels
         public ICollection<Student> Students { get; set; } = new List<Student>();
 
         //public int ChapterId { get; set; }
-        //public virtual Chapter Chapter { get; set; } = new Chapter();
+        public Chapter Chapter { get; set; } = new Chapter();
         
     }
 }

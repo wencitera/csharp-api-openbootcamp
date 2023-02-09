@@ -104,11 +104,18 @@ namespace MyFirstBackend.Controllers
             return NoContent();
         }
 
-        [HttpGet("/category/{categoryId}")]
+        [HttpGet("category/{categoryId}")]
         public IEnumerable<Course> GetCoursesByCategory(int categoryId)
         {
             return _coursesService.GetCoursesByCategory(categoryId);
         }
+
+        [HttpGet("withNoChapters")]
+        public IEnumerable<Course> GetCoursesWithNoChapters()
+        {
+            return _coursesService.GetCoursesWithNoChapters();
+        }
+
 
         private bool CourseExists(int id)
         {
