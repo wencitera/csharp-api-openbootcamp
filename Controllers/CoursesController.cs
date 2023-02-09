@@ -116,6 +116,11 @@ namespace MyFirstBackend.Controllers
             return _coursesService.GetCoursesWithNoChapters();
         }
 
+        [HttpGet("students/{studentId}")]
+        public IEnumerable<Course> GetCoursesByStudent(int studentId)
+        {
+            return _coursesService.GetCoursesByStudent(studentId);
+        }
 
         private bool CourseExists(int id)
         {

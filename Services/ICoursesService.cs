@@ -7,5 +7,7 @@ namespace MyFirstBackend.Services
         IEnumerable<Course> GetCoursesByCategory(int categoryId);
 
         IEnumerable<Course> GetCoursesWithNoChapters();
+
+        IEnumerable<Course> GetCoursesByStudent(int studentId);
     }
 }

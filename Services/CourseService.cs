@@ -15,6 +15,11 @@ namespace MyFirstBackend.Services
             return _context.Courses.Where(course => course.Categories.Any(cat => cat.Id == categoryId));
         }
 
+        public IEnumerable<Course> GetCoursesByStudent(int studentId)
+        {
+            return _context.Courses.Where(course => course.Students.Any(student => student.Id == studentId));
+        }
+
         public IEnumerable<Course> GetCoursesWithNoChapters()
         {
             return _context.Courses.Where(course => course.Chapter.List != "");
