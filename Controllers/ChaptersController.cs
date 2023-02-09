@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyFirstBackend.DataAccess;
 using MyFirstBackend.Models.DataModels;
+using MyFirstBackend.Services;
 
 namespace MyFirstBackend.Controllers
 {
@@ -15,10 +16,12 @@ namespace MyFirstBackend.Controllers
     public class ChaptersController : ControllerBase
     {
         private readonly UniversityDBContext _context;
+        private readonly IChaptersService _chaptersService;
 
-        public ChaptersController(UniversityDBContext context)
+        public ChaptersController(UniversityDBContext context, IChaptersService chaptersService)
         {
             _context = context;
+            _chaptersService = chaptersService;
         }
 
         // GET: api/Chapters
@@ -98,6 +101,12 @@ namespace MyFirstBackend.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        [HttpGet("course/{courseId}")]
+        public Chapter GetChapterByCourse(int courseId)
+        { 
+            return _chaptersService.GetChapterByCourse(courseId);
         }
 
         private bool ChapterExists(int id)

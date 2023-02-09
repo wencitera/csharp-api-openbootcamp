@@ -19,6 +19,7 @@ builder.Services.AddControllers();
 // 4 Add Services
 builder.Services.AddScoped<IStudentsService, StudentsService>();
 builder.Services.AddScoped<ICoursesService, CourseService>();
+builder.Services.AddScoped<IChaptersService, ChaptersService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
