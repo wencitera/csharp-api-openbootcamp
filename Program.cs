@@ -20,6 +20,7 @@ builder.Services.AddJwtTokenServices(builder.Configuration);
 
 // Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
 
 // 4 Add Services
@@ -78,6 +79,15 @@ builder.Services.AddCors(options => {
 });
 
 var app = builder.Build();
+
+var supportedCultures = new[] { "en-US", "es-ES", "fr-FR", "de-DE" };
+var localizationOptions = new RequestLocalizationOptions()
+    .SetDefaultCulture(supportedCultures[0])
+    .AddSupportedCultures(supportedCultures)
+    .AddSupportedUICultures(supportedCultures);
+
+app.UseRequestLocalization(localizationOptions);
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

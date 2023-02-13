@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using MyFirstBackend.DataAccess;
 using MyFirstBackend.Helpers;
 using MyFirstBackend.Models.DataModels;
+using MyFirstBackend.Resources.Entities;
 
 namespace MyFirstBackend.Controllers
 {
@@ -14,10 +16,13 @@ namespace MyFirstBackend.Controllers
     {
         private readonly JwtSettings _jwtSettings;
         private readonly UniversityDBContext _context;
-        public AccountController(JwtSettings jwtSettings, UniversityDBContext context)
+        private readonly IStringLocalizer<AccountController> _stringLocalizer;
+
+        public AccountController(JwtSettings jwtSettings, UniversityDBContext context, IStringLocalizer<AccountController> stringLocalizer)
         {
             _jwtSettings = jwtSettings;
             _context = context;
+            _stringLocalizer = stringLocalizer;
         }
 
         [HttpPost]
@@ -44,12 +49,12 @@ namespace MyFirstBackend.Controllers
                 }
                 else
                 {
-                    return BadRequest("Wrong Credentials");
+                    return BadRequest(_stringLocalizer["WrongLoging"].Value);
                 }
-                return Ok(Token);
+                return Ok(new { Msg = string.Format(_stringLocalizer["Welcome"].Value, Token.UserName), Token  });
             }catch (Exception ex)
             {
-                throw new Exception("GetToken Error", ex);
+                throw new Exception(_stringLocalizer["TokenError"].Value, ex);
             }
         }
 
