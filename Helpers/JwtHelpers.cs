@@ -17,7 +17,7 @@ namespace MyFirstBackend.Helpers
                 new Claim(ClaimTypes.NameIdentifier, Id.ToString()),
                 new Claim(ClaimTypes.Expiration, DateTime.UtcNow.AddDays(1).ToString("MMM ddd dd yyyy HH:mm:ss tt"))
             };
-
+            /*
             if (userAccounts.UserName == "Admin")
             {
                 claims.Add(new Claim(ClaimTypes.Role, "Administrator"));
@@ -26,6 +26,19 @@ namespace MyFirstBackend.Helpers
                 claims.Add(new Claim(ClaimTypes.Role, "User"));
                 claims.Add(new Claim("UserOnly", "User 1"));
             }
+            */
+            switch (userAccounts.Role)
+            {
+                case Role.Administrator:
+                    claims.Add(new Claim(ClaimTypes.Role, "Administrator"));
+                    break;
+                case Role.User:
+                default:
+                    claims.Add(new Claim(ClaimTypes.Role, "User"));
+                    claims.Add(new Claim("UserOnly", userAccounts.UserName));
+                    break;
+            }
+
 
             return claims;
         }

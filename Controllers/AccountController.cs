@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MyFirstBackend.DataAccess;
 using MyFirstBackend.Helpers;
 using MyFirstBackend.Models.DataModels;
 
@@ -12,29 +13,12 @@ namespace MyFirstBackend.Controllers
     public class AccountController : ControllerBase
     {
         private readonly JwtSettings _jwtSettings;
-
-        public AccountController(JwtSettings jwtSettings)
+        private readonly UniversityDBContext _context;
+        public AccountController(JwtSettings jwtSettings, UniversityDBContext context)
         {
             _jwtSettings = jwtSettings;
+            _context = context;
         }
-
-        private IEnumerable<User> Logins = new List<User>
-        {
-            new User()
-            {
-                Id = 5,
-                Email = "wencitera@gmail.com",
-                Name = "Admin",
-                Password = "Admin"
-            },
-            new User()
-            {
-                Id = 6,
-                Email = "pepe@gmail.com",
-                Name = "User 1",
-                Password = "pepe"
-            },
-        };
 
         [HttpPost]
         public IActionResult GetToken(UserLogins userLogin)
@@ -42,11 +26,11 @@ namespace MyFirstBackend.Controllers
             try
             {
                 var Token = new UserTokens();
-                var Valid = Logins.Any(user => user.Name.Equals(userLogin.UserName, StringComparison.OrdinalIgnoreCase));
-                
-                if(Valid)
+                var user = _context.Users.FirstOrDefault(user => user.Name.Equals(userLogin.UserName) && user.Password.Equals(userLogin.Password));
+
+                if (user != null)
                 {
-                    var user = Logins.FirstOrDefault(user => user.Name.Equals(userLogin.UserName, StringComparison.OrdinalIgnoreCase));
+                    
 
                     Token = JwtHelpers.GenTokenKey(
                         new UserTokens()
@@ -55,6 +39,7 @@ namespace MyFirstBackend.Controllers
                             EmailId = user.Email,
                             Id = user.Id,
                             GuidId = Guid.NewGuid(),
+                            Role = user.Role
                         }, _jwtSettings);
                 }
                 else
@@ -72,7 +57,7 @@ namespace MyFirstBackend.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public IActionResult GetUsersList()
         {
-            return Ok(Logins);
+            return Ok(_context.Users); 
         }
     
 
