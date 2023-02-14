@@ -4,9 +4,19 @@ using Microsoft.OpenApi.Models;
 using MyFirstBackend;
 using MyFirstBackend.DataAccess;
 using MyFirstBackend.Services;
+using Serilog;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
+// 11 Config Serilog
+builder.Host.UseSerilog((hostBuilderCtx, loggerCof) =>
+{
+    loggerCof
+    .WriteTo.Console()
+    .WriteTo.Debug()
+    .ReadFrom.Configuration(hostBuilderCtx.Configuration);
+}) ;
 
 // 2 Connection with SQL Server Express
 const string CONNECTIONNAME = "UniversityDB";
@@ -95,6 +105,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// 12 Use Serilog 
+app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 

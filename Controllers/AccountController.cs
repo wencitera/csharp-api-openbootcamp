@@ -6,7 +6,6 @@ using Microsoft.Extensions.Localization;
 using MyFirstBackend.DataAccess;
 using MyFirstBackend.Helpers;
 using MyFirstBackend.Models.DataModels;
-using MyFirstBackend.Resources.Entities;
 
 namespace MyFirstBackend.Controllers
 {
@@ -17,12 +16,14 @@ namespace MyFirstBackend.Controllers
         private readonly JwtSettings _jwtSettings;
         private readonly UniversityDBContext _context;
         private readonly IStringLocalizer<AccountController> _stringLocalizer;
+        private readonly ILogger<AccountController> _logger;
 
-        public AccountController(JwtSettings jwtSettings, UniversityDBContext context, IStringLocalizer<AccountController> stringLocalizer)
+        public AccountController(JwtSettings jwtSettings, UniversityDBContext context, IStringLocalizer<AccountController> stringLocalizer, ILogger<AccountController> logger)
         {
             _jwtSettings = jwtSettings;
             _context = context;
             _stringLocalizer = stringLocalizer;
+            _logger = logger;
         }
 
         [HttpPost]
@@ -59,9 +60,14 @@ namespace MyFirstBackend.Controllers
         }
 
         [HttpGet]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Administrator")]
         public IActionResult GetUsersList()
         {
+            _logger.LogInformation("test");
+            _logger.LogDebug("debug");
+            _logger.LogWarning("warn");
+            _logger.LogError("err");
+            _logger.LogCritical("crit");
             return Ok(_context.Users); 
         }
     
